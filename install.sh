@@ -51,19 +51,43 @@ NODE_VER=$(node -v)
 echo -e "${GREEN}✓ Node.js detectado: ${NODE_VER}${NC}"
 
 # 4. Create App Directory & Setup Files
-echo -e "${YELLOW}[3/5] Descargando y configurando ISP Latency Monitor en ${INSTALL_DIR}...${NC}"
+echo -e "${YELLOW}[3/5] Configurando ISP Latency Monitor en ${INSTALL_DIR}...${NC}"
 
-if [ -d "$INSTALL_DIR" ]; then
-  echo -e "${CYAN}Actualizando instalación existente...${NC}"
-  rm -rf "$INSTALL_DIR"
+# Find script directory reliably
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+CURRENT_DIR=$(pwd)
+
+SOURCE_DIR=""
+if [ -f "$SCRIPT_DIR/server.js" ] && [ -f "$SCRIPT_DIR/package.json" ]; then
+  SOURCE_DIR="$SCRIPT_DIR"
+elif [ -f "$CURRENT_DIR/server.js" ] && [ -f "$CURRENT_DIR/package.json" ]; then
+  SOURCE_DIR="$CURRENT_DIR"
 fi
 
-# Clone or copy files
-if [ -n "$REPO_URL" ]; then
-  git clone "$REPO_URL" "$INSTALL_DIR"
+if [ -n "$SOURCE_DIR" ]; then
+  echo -e "${GREEN}✓ Instalando desde archivos locales detectados en: ${SOURCE_DIR}${NC}"
+  mkdir -p "$INSTALL_DIR"
+  cp -r "$SOURCE_DIR"/* "$INSTALL_DIR"/
 else
-  # Default github repository (User can replace with their repo URL)
-  git clone https://github.com/USER/isp-latency-monitor.git "$INSTALL_DIR" || mkdir -p "$INSTALL_DIR"
+  # If running remotely via curl without local files
+  if [ -d "$INSTALL_DIR" ]; then
+    echo -e "${CYAN}Actualizando instalación existente...${NC}"
+    rm -rf "$INSTALL_DIR"
+  fi
+  mkdir -p "$INSTALL_DIR"
+
+  if [ -n "$ZIP_URL" ]; then
+    echo -e "${CYAN}Descargando paquete desde: ${ZIP_URL}...${NC}"
+    curl -fsSL "$ZIP_URL" -o /tmp/app.zip
+    apt-get install -y -qq unzip > /dev/null 2>&1 || yum install -y -q unzip > /dev/null 2>&1 || true
+    unzip -q /tmp/app.zip -d /tmp/app_extracted
+    cp -r /tmp/app_extracted/*/* "$INSTALL_DIR"/
+    rm -rf /tmp/app.zip /tmp/app_extracted
+  else
+    echo -e "${RED}❌ Error: No se encontraron los archivos locales (server.js, package.json).${NC}"
+    echo -e "${YELLOW}Por favor ejecuta 'sudo bash install.sh' dentro de la carpeta del proyecto.${NC}"
+    exit 1
+  fi
 fi
 
 cd "$INSTALL_DIR"
