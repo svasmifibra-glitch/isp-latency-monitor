@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  isp-monitor:
+    build: .
+    container_name: isp-latency-monitor
+    restart: always
+    network_mode: host # Allows raw ICMP ping and native network interface access
+    ports:
+      - "3005:3005"
+    environment:
+      - PORT=3005

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ISP Latency & Egress Monitor</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  
+  <!-- Header Bar -->
+  <header class="app-header">
+    <div class="header-content">
+      <div class="brand">
+        <div class="logo-icon">🌐</div>
+        <div>
+          <h1>MONITOR DE LATENCIAS Y SALIDAS INTERNACIONALES</h1>
+          <p class="subtitle">Validación en tiempo real para Proveedor de Internet (ISP)</p>
+        </div>
+      </div>
+      <div class="header-status">
+        <div class="status-indicator">
+          <span class="pulse-dot"></span>
+          <span id="liveStatusText">Conectado en vivo</span>
+        </div>
+        <div class="status-indicator" style="background: #e0f2fe; color: #0369a1;">
+          <span id="outboundIpText">IP Salida ISP: Detectando...</span>
+        </div>
+        <div class="last-update" id="lastUpdateTime">Actualizando...</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Grid Container -->
+  <main class="main-container">
+    <div id="cardsGrid" class="cards-grid">
+      <!-- Target cards will be dynamically rendered here by app.js -->
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Iniciando sondas de red y midiendo latencias...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal for Historial -->
+  <div id="historyModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="historyModalTitle">Historial de Latencia</h3>
+        <button class="close-btn" onclick="closeModal('historyModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="chart-container">
+          <canvas id="historyChart" width="600" height="250"></canvas>
+        </div>
+        <div id="historyStats" class="history-stats"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Ruta / Traceroute -->
+  <div id="routeModal" class="modal">
+    <div class="modal-content modal-lg">
+      <div class="modal-header">
+        <h3 id="routeModalTitle">Ruta de Red (Traceroute / MTR)</h3>
+        <button class="close-btn" onclick="closeModal('routeModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="tracerouteLoader" class="traceroute-loader">
+          <div class="spinner"></div>
+          <p>Ejecutando trazado de ruta salto por salto a través de tus proveedores...</p>
+        </div>
+        <div id="tracerouteResults" class="traceroute-results" style="display: none;">
+          <pre id="tracerouteOutput"></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

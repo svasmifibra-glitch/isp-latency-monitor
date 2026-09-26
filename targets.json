@@ -1,0 +1,128 @@
+[
+  {
+    "id": "google",
+    "name": "GOOGLE",
+    "protocol": "ICMP",
+    "host": "8.8.8.8",
+    "httpUrl": "https://www.google.com",
+    "port": 443,
+    "icon": "google"
+  },
+  {
+    "id": "cloudflare",
+    "name": "CLOUDFLARE",
+    "protocol": "ICMP",
+    "host": "1.1.1.1",
+    "httpUrl": "https://1.1.1.1",
+    "port": 443,
+    "icon": "cloudflare"
+  },
+  {
+    "id": "facebook",
+    "name": "FACEBOOK",
+    "protocol": "TCP 443",
+    "host": "facebook.com",
+    "httpUrl": "https://www.facebook.com",
+    "port": 443,
+    "icon": "facebook"
+  },
+  {
+    "id": "whatsapp",
+    "name": "WHATSAPP",
+    "protocol": "TCP 443",
+    "host": "whatsapp.com",
+    "httpUrl": "https://web.whatsapp.com",
+    "port": 443,
+    "icon": "whatsapp"
+  },
+  {
+    "id": "instagram",
+    "name": "INSTAGRAM",
+    "protocol": "TCP 443",
+    "host": "instagram.com",
+    "httpUrl": "https://www.instagram.com",
+    "port": 443,
+    "icon": "instagram"
+  },
+  {
+    "id": "tiktok",
+    "name": "TIKTOK",
+    "protocol": "TCP 443",
+    "host": "tiktok.com",
+    "httpUrl": "https://www.tiktok.com",
+    "port": 443,
+    "icon": "tiktok"
+  },
+  {
+    "id": "twitter",
+    "name": "X TWITTER",
+    "protocol": "TCP 443",
+    "host": "x.com",
+    "httpUrl": "https://x.com",
+    "port": 443,
+    "icon": "twitter"
+  },
+  {
+    "id": "youtube",
+    "name": "YOUTUBE",
+    "protocol": "TCP 443",
+    "host": "youtube.com",
+    "httpUrl": "https://www.youtube.com",
+    "port": 443,
+    "icon": "youtube"
+  },
+  {
+    "id": "steam",
+    "name": "STEAM",
+    "protocol": "TCP 443",
+    "host": "steampowered.com",
+    "httpUrl": "https://store.steampowered.com",
+    "port": 443,
+    "icon": "steam"
+  },
+  {
+    "id": "playstation",
+    "name": "PLAYSTATION",
+    "protocol": "TCP 443",
+    "host": "playstation.com",
+    "httpUrl": "https://www.playstation.com",
+    "port": 443,
+    "icon": "playstation"
+  },
+  {
+    "id": "xbox",
+    "name": "XBOX",
+    "protocol": "TCP 443",
+    "host": "xbox.com",
+    "httpUrl": "https://www.xbox.com",
+    "port": 443,
+    "icon": "xbox"
+  },
+  {
+    "id": "twitch",
+    "name": "TWITCH",
+    "protocol": "TCP 443",
+    "host": "twitch.tv",
+    "httpUrl": "https://www.twitch.tv",
+    "port": 443,
+    "icon": "twitch"
+  },
+  {
+    "id": "riotgames",
+    "name": "RIOT GAMES",
+    "protocol": "TCP 443",
+    "host": "riotgames.com",
+    "httpUrl": "https://www.riotgames.com",
+    "port": 443,
+    "icon": "riotgames"
+  },
+  {
+    "id": "roblox",
+    "name": "ROBLOX",
+    "protocol": "TCP 443",
+    "host": "roblox.com",
+    "httpUrl": "https://www.roblox.com",
+    "port": 443,
+    "icon": "roblox"
+  }
+]
