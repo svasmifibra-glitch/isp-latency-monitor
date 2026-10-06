@@ -58,9 +58,9 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 CURRENT_DIR=$(pwd)
 
 SOURCE_DIR=""
-if [ -f "$SCRIPT_DIR/server.js" ] && [ -f "$SCRIPT_DIR/package.json" ]; then
+if [ "$SCRIPT_DIR" != "$INSTALL_DIR" ] && [ -f "$SCRIPT_DIR/server.js" ] && [ -f "$SCRIPT_DIR/package.json" ]; then
   SOURCE_DIR="$SCRIPT_DIR"
-elif [ -f "$CURRENT_DIR/server.js" ] && [ -f "$CURRENT_DIR/package.json" ]; then
+elif [ "$CURRENT_DIR" != "$INSTALL_DIR" ] && [ -f "$CURRENT_DIR/server.js" ] && [ -f "$CURRENT_DIR/package.json" ]; then
   SOURCE_DIR="$CURRENT_DIR"
 fi
 
@@ -69,25 +69,27 @@ if [ -n "$SOURCE_DIR" ]; then
   mkdir -p "$INSTALL_DIR"
   cp -r "$SOURCE_DIR"/* "$INSTALL_DIR"/
 else
-  # If running remotely via curl without local files
-  if [ -d "$INSTALL_DIR" ]; then
-    echo -e "${CYAN}Actualizando instalación existente...${NC}"
-    rm -rf "$INSTALL_DIR"
-  fi
-  mkdir -p "$INSTALL_DIR"
+  # Running via curl or updating existing installation in /opt/isp-latency-monitor
+  echo -e "${CYAN}Descargando última versión pública desde GitHub...${NC}"
+  
+  REPO_URL="https://github.com/svasmifibra-glitch/isp-latency-monitor.git"
+  ZIP_URL="https://github.com/svasmifibra-glitch/isp-latency-monitor/archive/refs/heads/main.zip"
 
-  if [ -n "$ZIP_URL" ]; then
-    echo -e "${CYAN}Descargando paquete desde: ${ZIP_URL}...${NC}"
+  TMP_DIR="/tmp/isp_update_$(date +%s)"
+  mkdir -p "$TMP_DIR"
+
+  if command -v git &> /dev/null; then
+    git clone --depth 1 "$REPO_URL" "$TMP_DIR"
+  else
     curl -fsSL "$ZIP_URL" -o /tmp/app.zip
     apt-get install -y -qq unzip > /dev/null 2>&1 || yum install -y -q unzip > /dev/null 2>&1 || true
-    unzip -q /tmp/app.zip -d /tmp/app_extracted
-    cp -r /tmp/app_extracted/*/* "$INSTALL_DIR"/
-    rm -rf /tmp/app.zip /tmp/app_extracted
-  else
-    echo -e "${RED}❌ Error: No se encontraron los archivos locales (server.js, package.json).${NC}"
-    echo -e "${YELLOW}Por favor ejecuta 'sudo bash install.sh' dentro de la carpeta del proyecto.${NC}"
-    exit 1
+    unzip -q /tmp/app.zip -d "$TMP_DIR"
+    TMP_DIR="$(ls -d $TMP_DIR/* | head -n 1)"
   fi
+
+  mkdir -p "$INSTALL_DIR"
+  cp -rf "$TMP_DIR"/* "$INSTALL_DIR"/
+  rm -rf /tmp/app.zip /tmp/isp_update_* 2>/dev/null || true
 fi
 
 cd "$INSTALL_DIR"
