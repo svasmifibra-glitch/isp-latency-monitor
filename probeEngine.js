@@ -232,25 +232,27 @@ async function probeAllTargets() {
   const publicIp = await getPublicIpAddress();
 
   for (const target of targets) {
-    // 1. Connection Ping (ICMP or TCP 443)
-    let pingResult;
-    if (target.protocol === 'ICMP') {
-      pingResult = await checkIcmpPing(target.host, 2);
-    } else {
-      pingResult = await checkTcpPing(target.host, target.port || 443);
-    }
+    // 1. Try ICMP Ping first (to match tracert hop RTT accurately)
+    let icmpResult = await checkIcmpPing(target.host, 2);
 
-    // 2. TCP Handshake / Connection Time
+    // 2. TCP Handshake / Connection Time on Port 443
     const tcpResult = await checkTcpPing(target.host, target.port || 443);
 
     // 3. HTTP TTFB & Total Response
     const httpResult = await checkHttpMetrics(target.httpUrl);
 
-    // Combine results
-    const isOnline = pingResult.success || tcpResult.success || httpResult.success;
-    const pingMs = pingResult.rtt !== null ? pingResult.rtt : (tcpResult.rtt !== null ? tcpResult.rtt : null);
-    const lossPct = pingResult.lossPercent !== undefined ? pingResult.lossPercent : (isOnline ? 0 : 100);
+    // Determine online status & primary ping RTT
+    const isOnline = icmpResult.success || tcpResult.success || httpResult.success;
+    
+    // Use ICMP RTT if available (matches tracert), otherwise fall back to TCP 443 Handshake RTT
+    let pingMs = null;
+    if (icmpResult.success && icmpResult.rtt !== null) {
+      pingMs = icmpResult.rtt;
+    } else if (tcpResult.success && tcpResult.rtt !== null) {
+      pingMs = tcpResult.rtt;
+    }
 
+    const lossPct = icmpResult.lossPercent !== undefined ? icmpResult.lossPercent : (isOnline ? 0 : 100);
     const connectionTimeMs = tcpResult.rtt;
     const ttfbMs = httpResult.ttfb;
     const totalWebMs = httpResult.totalTime;

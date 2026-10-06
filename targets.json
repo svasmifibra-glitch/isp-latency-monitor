@@ -18,6 +18,42 @@
     "icon": "cloudflare"
   },
   {
+    "id": "kick",
+    "name": "KICK",
+    "protocol": "TCP 443",
+    "host": "kick.com",
+    "httpUrl": "https://kick.com",
+    "port": 443,
+    "icon": "kick"
+  },
+  {
+    "id": "twitch",
+    "name": "TWITCH",
+    "protocol": "TCP 443",
+    "host": "twitch.tv",
+    "httpUrl": "https://www.twitch.tv",
+    "port": 443,
+    "icon": "twitch"
+  },
+  {
+    "id": "youtube",
+    "name": "YOUTUBE",
+    "protocol": "TCP 443",
+    "host": "youtube.com",
+    "httpUrl": "https://www.youtube.com",
+    "port": 443,
+    "icon": "youtube"
+  },
+  {
+    "id": "netflix",
+    "name": "NETFLIX",
+    "protocol": "TCP 443",
+    "host": "netflix.com",
+    "httpUrl": "https://www.netflix.com",
+    "port": 443,
+    "icon": "netflix"
+  },
+  {
     "id": "facebook",
     "name": "FACEBOOK",
     "protocol": "TCP 443",
@@ -63,13 +99,13 @@
     "icon": "twitter"
   },
   {
-    "id": "youtube",
-    "name": "YOUTUBE",
+    "id": "discord",
+    "name": "DISCORD",
     "protocol": "TCP 443",
-    "host": "youtube.com",
-    "httpUrl": "https://www.youtube.com",
+    "host": "discord.com",
+    "httpUrl": "https://discord.com",
     "port": 443,
-    "icon": "youtube"
+    "icon": "discord"
   },
   {
     "id": "steam",
@@ -79,6 +115,42 @@
     "httpUrl": "https://store.steampowered.com",
     "port": 443,
     "icon": "steam"
+  },
+  {
+    "id": "riotgames",
+    "name": "RIOT GAMES",
+    "protocol": "TCP 443",
+    "host": "riotgames.com",
+    "httpUrl": "https://www.riotgames.com",
+    "port": 443,
+    "icon": "riotgames"
+  },
+  {
+    "id": "valorant_la",
+    "name": "VALORANT (LATAM)",
+    "protocol": "TCP 443",
+    "host": "104.160.136.3",
+    "httpUrl": "https://104.160.136.3",
+    "port": 443,
+    "icon": "riotgames"
+  },
+  {
+    "id": "epicgames",
+    "name": "EPIC / FORTNITE",
+    "protocol": "TCP 443",
+    "host": "epicgames.com",
+    "httpUrl": "https://www.epicgames.com",
+    "port": 443,
+    "icon": "epicgames"
+  },
+  {
+    "id": "roblox",
+    "name": "ROBLOX",
+    "protocol": "TCP 443",
+    "host": "roblox.com",
+    "httpUrl": "https://www.roblox.com",
+    "port": 443,
+    "icon": "roblox"
   },
   {
     "id": "playstation",
@@ -97,32 +169,5 @@
     "httpUrl": "https://www.xbox.com",
     "port": 443,
     "icon": "xbox"
-  },
-  {
-    "id": "twitch",
-    "name": "TWITCH",
-    "protocol": "TCP 443",
-    "host": "twitch.tv",
-    "httpUrl": "https://www.twitch.tv",
-    "port": 443,
-    "icon": "twitch"
-  },
-  {
-    "id": "riotgames",
-    "name": "RIOT GAMES",
-    "protocol": "TCP 443",
-    "host": "riotgames.com",
-    "httpUrl": "https://www.riotgames.com",
-    "port": 443,
-    "icon": "riotgames"
-  },
-  {
-    "id": "roblox",
-    "name": "ROBLOX",
-    "protocol": "TCP 443",
-    "host": "roblox.com",
-    "httpUrl": "https://www.roblox.com",
-    "port": 443,
-    "icon": "roblox"
   }
 ]
