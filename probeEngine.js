@@ -225,21 +225,19 @@ function runTraceroute(host) {
 }
 
 /**
- * Perform a full probe cycle across all targets
+ * Perform a full probe cycle across all targets in parallel
  */
 async function probeAllTargets() {
-  const results = [];
   const publicIp = await getPublicIpAddress();
+  const defaultLocalIp = getLocalIpInfo().ip;
 
-  for (const target of targets) {
-    // 1. Try ICMP Ping first (to match tracert hop RTT accurately)
-    let icmpResult = await checkIcmpPing(target.host, 2);
-
-    // 2. TCP Handshake / Connection Time on Port 443
-    const tcpResult = await checkTcpPing(target.host, target.port || 443);
-
-    // 3. HTTP TTFB & Total Response
-    const httpResult = await checkHttpMetrics(target.httpUrl);
+  const results = await Promise.all(targets.map(async (target) => {
+    // Execute ICMP, TCP 443 handshake, and HTTP metrics in parallel per target
+    const [icmpResult, tcpResult, httpResult] = await Promise.all([
+      checkIcmpPing(target.host, 1),
+      checkTcpPing(target.host, target.port || 443, 2500),
+      checkHttpMetrics(target.httpUrl, 3000)
+    ]);
 
     // Determine online status & primary ping RTT
     const isOnline = icmpResult.success || tcpResult.success || httpResult.success;
@@ -281,9 +279,9 @@ async function probeAllTargets() {
       ? parseFloat(((failedCount / recentSamples.length) * 100).toFixed(1)) 
       : 0;
 
-    const localIp = tcpResult.localIp || getLocalIpInfo().ip;
+    const localIp = tcpResult.localIp || defaultLocalIp;
 
-    results.push({
+    return {
       id: target.id,
       name: target.name,
       protocol: target.protocol,
@@ -298,8 +296,8 @@ async function probeAllTargets() {
       ttfbMs: ttfbMs !== null ? ttfbMs : 0.0,
       totalWebMs: totalWebMs !== null ? totalWebMs : 0.0,
       failurePercent: failurePercent
-    });
-  }
+    };
+  }));
 
   return results;
 }
